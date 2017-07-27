@@ -23,6 +23,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/v1/user")
 @Api(description = "用户接口")
+@CrossOrigin
 public class UserController {
 
     @Autowired

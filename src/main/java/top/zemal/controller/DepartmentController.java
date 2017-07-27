@@ -26,6 +26,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/v1/department")
 @Api(description = "部门接口")
+@CrossOrigin
 public class DepartmentController {
 
     @Autowired

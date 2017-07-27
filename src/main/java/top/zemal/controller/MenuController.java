@@ -23,6 +23,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/v1/menu")
 @Api(description = "菜单接口")
+@CrossOrigin
 public class MenuController {
 
     @Autowired

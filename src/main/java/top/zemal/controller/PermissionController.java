@@ -23,6 +23,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/v1/permission")
 @Api(description = "权限接口")
+@CrossOrigin
 public class PermissionController {
 
     @Autowired

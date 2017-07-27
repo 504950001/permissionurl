@@ -23,6 +23,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/v1/role")
 @Api(description = "角色接口")
+@CrossOrigin
 public class RoleController {
 
     @Autowired
@@ -97,7 +98,7 @@ public class RoleController {
     }
 
     @ApiOperation(value = "查询所有角色", notes = "查询所有角色")
-    @RequestMapping(value = "/searchAllRole", method = RequestMethod.POST)
+    @RequestMapping(value = "/searchAllRole", method = RequestMethod.GET)
     Responses searchAllRole() {
         List<Role> result = null;
         try {

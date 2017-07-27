@@ -29,6 +29,7 @@ import javax.servlet.http.HttpSession;
 @RestController
 @RequestMapping("/v1/base")
 @Api(description = "基础接口，用户、用户组、权限、权限组等的查询")
+@CrossOrigin
 public class BaseController {
 
     @Autowired
@@ -109,8 +110,7 @@ public class BaseController {
 
     @ApiOperation(value = "登录页面", notes = "登录页面")
     @RequestMapping(value = "/login", method = RequestMethod.GET)
-    Responses getlogin(
-            ) {
+    Responses getlogin() {
         Object result = null;
         try {
             baseService.getlogin();
@@ -152,7 +152,7 @@ public class BaseController {
     ) {
         Object result = null;
         try {
-            result = "用户未授权";
+            result = "用户未被授权";
         } catch (Exception e) {
             e.printStackTrace();
             return new Responses(ResponseConstants.SUCCESS_FAILED,
