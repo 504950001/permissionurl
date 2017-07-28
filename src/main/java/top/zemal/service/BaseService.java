@@ -232,7 +232,7 @@ public class BaseService {
     }
 
 
-    public User login(String username, String password, HttpSession session){
+    public SessionCache login(String username, String password, HttpSession session){
         User loginUser = userRepository.findByUsername(username);
 
         if (loginUser == null) {
@@ -264,10 +264,8 @@ public class BaseService {
                 }
             }
         }
-
         session.setAttribute(AuthInterceptor.SESSION_KEY, sessionCache);
-
-        return loginUser;
+        return sessionCache;
     }
 
     public void getlogin(){

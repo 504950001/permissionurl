@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpRequest;
 import org.springframework.web.bind.annotation.*;
 import top.zemal.VO.DepartmentVO;
+import top.zemal.VO.SessionCache;
 import top.zemal.content.ResponseConstants;
 import top.zemal.content.Responses;
 import top.zemal.enums.OperateType;
@@ -97,6 +98,8 @@ public class BaseController {
         try {
             HttpSession session = request.getSession();
             result = baseService.login(username, password, session);
+            System.out.println(((SessionCache)result).getUsername());
+            System.out.println("login session_id:"+session.getId());
         } catch (Exception e) {
             e.printStackTrace();
             return new Responses(ResponseConstants.SUCCESS_FAILED,
@@ -126,15 +129,14 @@ public class BaseController {
                 ResponseConstants.CODE_FAILED_VALUE, result);
     }
 
-    @ApiOperation(value = "注销", notes = "注销")
-    @RequestMapping(value = "/logout", method = RequestMethod.GET)
-    Responses logout(HttpServletRequest request, HttpServletResponse response) {
+    @ApiOperation(value = "登录成功后的首页", notes = "登录成功后的首页")
+    @RequestMapping(value = "/index", method = RequestMethod.GET)
+    Responses index(HttpServletRequest request) {
         Object result = null;
         try {
-            baseService.logout();
+            result = "登录成功后的首页";
             HttpSession session = request.getSession();
-            session.removeAttribute(AuthInterceptor.SESSION_KEY);
-            response.sendRedirect(request.getContextPath()+"/v1/base/login");
+            System.out.println("index session_id:"+session.getId());
         } catch (Exception e) {
             e.printStackTrace();
             return new Responses(ResponseConstants.SUCCESS_FAILED,
@@ -146,7 +148,27 @@ public class BaseController {
                 ResponseConstants.CODE_SUCCESS_VALUE, result);
     }
 
-    @ApiOperation(value = "登录页面", notes = "登录页面")
+    @ApiOperation(value = "注销", notes = "注销")
+    @RequestMapping(value = "/logout", method = RequestMethod.GET)
+    Responses logout(HttpServletRequest request, HttpServletResponse response) {
+        Object result = null;
+        try {
+            baseService.logout();
+            HttpSession session = request.getSession();
+            session.removeAttribute(AuthInterceptor.SESSION_KEY);
+//            response.sendRedirect(request.getContextPath()+"/v1/base/login");
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new Responses(ResponseConstants.SUCCESS_FAILED,
+                    ResponseConstants.CODE_FAILED,
+                    e.getMessage(), result);
+        }
+        return new Responses(ResponseConstants.SUCCESS_OK,
+                ResponseConstants.CODE_SUCCESS,
+                ResponseConstants.CODE_SUCCESS_VALUE, result);
+    }
+
+    @ApiOperation(value = "未被授权页面", notes = "未被授权页面")
     @RequestMapping(value = "/unauthorized", method = RequestMethod.GET)
     Responses unauthorized(
     ) {

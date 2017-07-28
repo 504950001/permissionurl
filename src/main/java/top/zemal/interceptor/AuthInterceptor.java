@@ -65,11 +65,19 @@ public class AuthInterceptor implements HandlerInterceptor {
 
 
 		// 2.登录拦截
-		HttpSession session = request.getSession(true);
+		HttpSession session = request.getSession();
+		System.out.println(SESSION_KEY);
 		//判断用户ID是否存在，不存在就跳转到登录界面
 		if(session.getAttribute(SESSION_KEY) == null){
+			System.out.println("---session is null---");
 			response.sendRedirect(request.getContextPath()+"/v1/base/login");
 			return false;
+		}
+
+		// 登录后的首页,如果一个权限的没有这展示为空
+		if (uri.endsWith("/v1/base/index")) { // 接口
+			System.out.println("---登录后都可以访问的url---");
+			return true;// 放行
 		}
 
 		// 3. 匿名访问拦截器 (暂无)
