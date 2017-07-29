@@ -101,10 +101,10 @@
                 </div>
                 <ul id="dashboard-menu" class="nav nav-list collapse in">
                     <li><a href="index.html">首页</a></li>
-                    <li><a onclick="userUrl()">人员</a></li>
-                    <li><a onclick="roleUrl()">角色</a></li>
-                    <li><a onclick="permissionUrl()">>权限</a></li>
-                    <li><a onclick="menuUrl()">>菜单</a></li>
+                    <li><a href="/user">人员</a></li>
+                    <li><a href="/role">角色</a></li>
+                    <li><a a href="/permission">权限</a></li>
+                    <li><a href="/menu">菜单</a></li>
                     <li><a href="faq.html">部门</a></li>
 
                 </ul>
@@ -347,10 +347,14 @@
                 url: "/user",
                 dataType: "json",
                 success: function (data) {
-                    window.location.href = "/user";
+                    alert("无权限访问!");
+//                    window.location.href = "/user";
                 },
                 error: function (data) {
-                    alert(JSON.stringify(data));
+                    console.log(data);
+                    console.log(console.log(JSON.stringify(data)));
+                    alert("有权限访问!");
+                    window.location.href = "/user";
                 }
             });
         }
@@ -375,10 +379,12 @@
                 url: "/permission",
                 dataType: "json",
                 success: function (data) {
-                    window.location.href = "/permission";
+                    alert("无权限访问!");
+//                    window.location.href = "/permission";
                 },
                 error: function (data) {
                     alert(JSON.stringify(data));
+                    window.location.href = "/permission";
                 }
             });
         }

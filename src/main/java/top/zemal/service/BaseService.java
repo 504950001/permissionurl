@@ -87,10 +87,17 @@ public class BaseService {
     }
 
     public Menu operateMenu(Integer operateType,
-                                  Long pk, Menu menuVO){
+                                  Long pk, MenuVO menuVO) throws Exception {
         if (operateType == OperateType.add.getIndex()){ // 添加
             Menu menu = new Menu();
             BeanUtils.copyProperties(menuVO, menu);
+            if (menuVO.getChildrenIds() != null && menuVO.getChildrenIds().size()>0){ // 直属部门
+                List<Menu> menuList = menuRepository.findAllById(menuVO.getChildrenIds());
+                if (menuList == null){
+                    throw new Exception("error");
+                }
+                menu.setChildren(menuList);
+            }
             return menuRepository.save(menu);
         }else if (operateType == OperateType.modify.getIndex()){ // 修改
             Menu menu = new Menu();
@@ -108,10 +115,16 @@ public class BaseService {
     }
 
     public Permission operatePermission(Integer operateType,
-                                  Long pk, Permission permissionVO){
+                                  Long pk, PermissionVO permissionVO){
         if (operateType == OperateType.add.getIndex()){ // 添加
             Permission permission = new Permission();
             BeanUtils.copyProperties(permissionVO, permission);
+            if (permissionVO.getMenuId() != null){
+                Menu menu = menuRepository.findById(permissionVO.getMenuId()).get();
+                if (menu!=null){
+                    permission.setMenu(menu);
+                }
+            }
             return permissionRepository.save(permission);
         }else if (operateType == OperateType.modify.getIndex()){ // 修改
             Permission permission = new Permission();
@@ -264,6 +277,8 @@ public class BaseService {
                 }
             }
         }
+        if (urlSet != null && urlSet.size() >0)
+            sessionCache.setMenuUrl(urlSet);
         session.setAttribute(AuthInterceptor.SESSION_KEY, sessionCache);
         return sessionCache;
     }

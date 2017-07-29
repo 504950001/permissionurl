@@ -37,7 +37,7 @@ public class Menu implements Serializable{
 	
 	// 添加一个属性,装二级菜单,但是此属性不持久化,不交给hibernate管理，不配置到映射文件里面
 	// 子菜单:此属性不交给hibernate处理，不在映射文件里面配置
-	@OneToMany
+	@ManyToMany
 	private List<Menu> children = new ArrayList<Menu>();
 
 	public Long getId() {

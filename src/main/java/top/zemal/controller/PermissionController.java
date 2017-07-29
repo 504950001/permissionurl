@@ -34,9 +34,7 @@ public class PermissionController {
     Responses addUsers(@ModelAttribute PermissionVO permissionVO) {
         Permission result = null;
         try {
-            Permission permission = new Permission();
-            BeanUtils.copyProperties(permissionVO, permission);
-            result = baseService.operatePermission(OperateType.add.getIndex(),null, permission);
+            result = baseService.operatePermission(OperateType.add.getIndex(),null, permissionVO);
         } catch (Exception e) {
             e.printStackTrace();
             return new Responses(ResponseConstants.SUCCESS_FAILED,
@@ -53,10 +51,7 @@ public class PermissionController {
     Responses modifyPermission(@RequestParam Long pk, @ModelAttribute PermissionVO permissionVO) {
         Permission result = null;
         try {
-            Permission permission = new Permission();
-            BeanUtils.copyProperties(permissionVO, permission);
-            permission.setId(pk);
-            result = baseService.operatePermission(OperateType.modify.getIndex(),permission.getId(),permission);
+            result = baseService.operatePermission(OperateType.modify.getIndex(),pk,permissionVO);
         } catch (Exception e) {
             e.printStackTrace();
             return new Responses(ResponseConstants.SUCCESS_FAILED,

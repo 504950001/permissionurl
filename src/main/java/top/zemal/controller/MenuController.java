@@ -34,9 +34,7 @@ public class MenuController {
     Responses addUsers(@ModelAttribute MenuVO menuVO) {
         Menu result = null;
         try {
-            Menu menu = new Menu();
-            BeanUtils.copyProperties(menuVO, menu);
-            result = baseService.operateMenu(OperateType.add.getIndex(),null, menu);
+            result = baseService.operateMenu(OperateType.add.getIndex(),null, menuVO);
         } catch (Exception e) {
             e.printStackTrace();
             return new Responses(ResponseConstants.SUCCESS_FAILED,
@@ -53,10 +51,7 @@ public class MenuController {
     Responses modifyMenu(@RequestParam Long pk, @ModelAttribute MenuVO MenuVO) {
         Menu result = null;
         try {
-            Menu menu = new Menu();
-            BeanUtils.copyProperties(MenuVO, menu);
-            menu.setId(pk);
-            result = baseService.operateMenu(OperateType.modify.getIndex(),menu.getId(),menu);
+            result = baseService.operateMenu(OperateType.modify.getIndex(),pk,MenuVO);
         } catch (Exception e) {
             e.printStackTrace();
             return new Responses(ResponseConstants.SUCCESS_FAILED,
