@@ -38,31 +38,14 @@ public class AuthInterceptor implements HandlerInterceptor {
 		String uri = request.getRequestURI();
 
 		// 1.公用url拦截器进行放行
-		if (uri.endsWith("/v1/base/login") || uri.endsWith("/v1/base/logout")
-				|| uri.endsWith("/v1/base/unauthorized")) {
+		if (uri.endsWith("/login") || uri.endsWith("/logout")
+				|| uri.endsWith("/unauthorized")) {
 			return true;// 放行
 		}
 
-		if (uri.endsWith("swagger-ui.html")) { // 接口
+		if (uri.endsWith("/swagger-ui.html")) { // 接口
 			return true;// 放行
 		}
-
-//		List<String> stringList = new ArrayList<>();
-//		List<String> strings = null;
-//		try {
-//			commonUrlConfig.getUrl();
-//			ResourceUtils.getFile("");
-//		}catch (RuntimeException e){
-//			e.printStackTrace();
-//		}
-//
-//		if (strings != null && strings.size() > 0){
-//			stringList.addAll(strings);
-//			for (String string: stringList){
-//				if (uri.contains(string)) return true;
-//			}
-//		}
-
 
 		// 2.登录拦截
 		HttpSession session = request.getSession();
@@ -70,12 +53,12 @@ public class AuthInterceptor implements HandlerInterceptor {
 		//判断用户ID是否存在，不存在就跳转到登录界面
 		if(session.getAttribute(SESSION_KEY) == null){
 			System.out.println("---session is null---");
-			response.sendRedirect(request.getContextPath()+"/v1/base/login");
+			response.sendRedirect(request.getContextPath()+"/login");
 			return false;
 		}
 
 		// 登录后的首页,如果一个权限的没有这展示为空
-		if (uri.endsWith("/v1/base/index")) { // 接口
+		if (uri.endsWith("/index")) { // 接口
 			System.out.println("---登录后都可以访问的url---");
 			return true;// 放行
 		}
@@ -86,7 +69,7 @@ public class AuthInterceptor implements HandlerInterceptor {
 		SessionCache sessionCache = (SessionCache) session.getAttribute(AuthInterceptor.SESSION_KEY);
 
 		if (sessionCache == null){
-			response.sendRedirect(request.getContextPath()+"/v1/base/unauthorized");
+			response.sendRedirect(request.getContextPath()+"/unauthorized");
 			return false;
 		}
 
@@ -94,7 +77,7 @@ public class AuthInterceptor implements HandlerInterceptor {
 			Set<String> stringSet = sessionCache.getMenuUrl();
 			if (stringSet != null && stringSet.size()>0){
 				if (!stringSet.contains(uri)){
-					response.sendRedirect(request.getContextPath()+"/v1/base/unauthorized");
+					response.sendRedirect(request.getContextPath()+"/unauthorized");
 					return false;
 				}
 			}

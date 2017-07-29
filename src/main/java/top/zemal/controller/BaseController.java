@@ -7,7 +7,9 @@ import io.swagger.annotations.ApiParam;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpRequest;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.ModelAndView;
 import top.zemal.VO.DepartmentVO;
 import top.zemal.VO.SessionCache;
 import top.zemal.content.ResponseConstants;
@@ -28,7 +30,7 @@ import javax.servlet.http.HttpSession;
  **/
 
 @RestController
-@RequestMapping("/v1/base")
+//@RequestMapping("/v1/base")   // 加入了层级后静态资源无法访问
 @Api(description = "基础接口，用户、用户组、权限、权限组等的查询")
 @CrossOrigin
 public class BaseController {
@@ -111,42 +113,21 @@ public class BaseController {
                 ResponseConstants.CODE_SUCCESS_VALUE, result);
     }
 
-    @ApiOperation(value = "登录页面", notes = "登录页面")
-    @RequestMapping(value = "/login", method = RequestMethod.GET)
-    Responses getlogin() {
-        Object result = null;
-        try {
-            baseService.getlogin();
-            result = "用户未登录";
-        } catch (Exception e) {
-            e.printStackTrace();
-            return new Responses(ResponseConstants.SUCCESS_FAILED,
-                    ResponseConstants.CODE_FAILED,
-                    e.getMessage(), result);
-        }
-        return new Responses(ResponseConstants.SUCCESS_OK,
-                ResponseConstants.NOT_LOG_IN,
-                ResponseConstants.CODE_FAILED_VALUE, result);
-    }
-
-    @ApiOperation(value = "登录成功后的首页", notes = "登录成功后的首页")
-    @RequestMapping(value = "/index", method = RequestMethod.GET)
-    Responses index(HttpServletRequest request) {
-        Object result = null;
-        try {
-            result = "登录成功后的首页";
-            HttpSession session = request.getSession();
-            System.out.println("index session_id:"+session.getId());
-        } catch (Exception e) {
-            e.printStackTrace();
-            return new Responses(ResponseConstants.SUCCESS_FAILED,
-                    ResponseConstants.CODE_FAILED,
-                    e.getMessage(), result);
-        }
-        return new Responses(ResponseConstants.SUCCESS_OK,
-                ResponseConstants.CODE_SUCCESS,
-                ResponseConstants.CODE_SUCCESS_VALUE, result);
-    }
+//    @ApiOperation(value = "登录页面", notes = "登录页面")
+//    @RequestMapping(value = "/login", method = RequestMethod.GET)
+//    ModelAndView getlogin() {
+//        ModelAndView modelAndView = new ModelAndView();
+//        modelAndView.setViewName("sign-in");
+//        return modelAndView;
+//    }
+//
+//    @ApiOperation(value = "登录成功后的首页", notes = "登录成功后的首页")
+//    @RequestMapping(value = "/index", method = RequestMethod.GET)
+//    ModelAndView index() {
+//        ModelAndView modelAndView = new ModelAndView();
+//        modelAndView.setViewName("index");
+//        return modelAndView;
+//    }
 
     @ApiOperation(value = "注销", notes = "注销")
     @RequestMapping(value = "/logout", method = RequestMethod.GET)
